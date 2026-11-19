@@ -1,0 +1,99 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Travel Vocabulary Lab</title><style>
+:root{--navy:#173455;--blue:#eaf3fc;--line:#cbd9e8;--green:#16724d;--red:#af3347;--ink:#1d2c3b}*{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Arial,sans-serif}main{max-width:970px;margin:auto;padding:24px 18px 65px}header{background:#173455;color:white;padding:34px;border-radius:18px;margin-bottom:22px}h1{font-size:clamp(28px,5vw,40px);margin:0 0 8px}header p{margin:0;color:#e0eaf4}section{background:white;border:1px solid var(--line);border-radius:16px;margin:20px 0;padding:25px}h2{margin:0 0 8px;font-size:23px;color:var(--navy)}.sub{color:#526477;margin:0 0 20px}.item{padding:17px 0;border-top:1px solid #e7edf4}.item:first-of-type{border-top:0}.prompt{font-weight:650;margin-bottom:10px}.options{display:flex;flex-wrap:wrap;gap:9px}.option{border:1px solid #b9c9dc;border-radius:9px;padding:9px 13px;background:#fff;color:#173455;cursor:pointer;font:inherit;text-align:left}.option:hover{background:#edf5ff}.option.selected{background:#d9eaff;border-color:#3267a2}.option:disabled{cursor:default;opacity:.9}.answerline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}input[type=text]{min-width:170px;max-width:100%;flex:1;padding:11px 12px;border:1px solid #9eb5cc;border-radius:9px;font:inherit}button.check{background:#173455;color:white;border:0;border-radius:9px;padding:11px 17px;font:inherit;cursor:pointer}button.check:disabled{opacity:.45;cursor:default}.feedback{font-size:14px;margin-top:9px;min-height:20px}.correct{color:var(--green)}.incorrect{color:var(--red)}.mini{color:#607083;font-size:14px}.bank{background:#eef5fc;border-radius:10px;padding:12px 15px;margin:14px 0;color:#173455}.topline{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.count{font-size:14px;color:#58708a}.footer{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;margin-top:24px}.progress{height:12px;background:#e4ebf3;border-radius:10px;overflow:hidden;margin:12px 0}.fill{height:100%;width:0;background:#2d769a;transition:width .2s}.result{font-size:23px;font-weight:750;color:#173455;margin-top:15px}.muted{color:#63768a}#finish{font-size:17px;padding:13px 22px}#reset{margin-left:8px;background:white;color:#173455;border:1px solid #173455}strong{font-weight:700}@media(max-width:600px){header{padding:24px}section{padding:18px}.option{width:100%}#reset{margin:10px 0 0}}
+</style><style id="translation-style">.vocab-card .translation{color:#475569;font-size:14px;margin-top:3px}.vocab-card .coll{margin-bottom:2px}.vocab-card .coll-translation{font-size:13px;color:#596b7f;margin-bottom:10px}</style><style id="vocab-style">.vocab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:11px}.vocab-card{border:1px solid #d6e1ed;border-radius:11px;padding:13px 15px;background:#fafcff}.vocab-card strong{color:#173455;font-size:17px}.vocab-card .ipa{color:#596b7f;font-size:14px}.vocab-card .coll{margin:7px 0 10px;font-size:15px}.speak{background:#eaf3fc;border:1px solid #bdd3e9;color:#173455;border-radius:8px;padding:6px 10px;cursor:pointer;font:inherit;font-size:13px}.speak:hover{background:#d5e9fb}.speak:focus-visible{outline:2px solid #173455;outline-offset:2px}.voice-note{font-size:13px;color:#596b7f;margin-top:12px}</style></head><body><main><header><h1>Travel Vocabulary Lab</h1><p>Learn the expressions. Use them in real situations. Check your answers as you go.</p></header><div class="footer" style="margin-top:0"><div class="topline"><strong>Your progress</strong><span id="counter" class="count">0 / 0 checked</span></div><div class="progress"><div id="bar" class="fill"></div></div><span class="mini">You can change an answer and check it again before finishing.</span></div><section id="vocabulary"><h2>Start here: Vocabulary &amp; collocations</h2><p class="sub">Read each expression, learn the collocation and tap Listen to hear British pronunciation. Then complete the practice below.</p><div id="vocab-grid" class="vocab-grid"></div><p class="voice-note">Audio uses your browser’s British English voice when available. Pronunciation may vary depending on your device.</p></section><div id="sections"></div><div class="footer"><h2>🏁 Your final result</h2><p class="sub">Complete all the questions, then see your score.</p><button id="finish" class="check">Show my result</button><button id="reset" class="check">Start again</button><div id="result" aria-live="polite"></div></div></main><script>
+
+const vocabulary=[
+['carbon emissions','/ˈkɑːbən ɪˈmɪʃənz/','reduce carbon emissions',"выбросы углекислого газа","сократить выбросы углекислого газа"],
+['catch','/kætʃ/','catch a bus / train / flight',"успеть на транспорт; сесть на рейс","успеть на автобус / поезд / самолёт"],
+['commute','/kəˈmjuːt/','a daily commute · commute to work',"регулярно ездить на работу или учёбу","ежедневная дорога на работу · ездить на работу"],
+['crew','/kruː/','flight crew · cabin crew',"экипаж","экипаж самолёта · бортпроводники"],
+['cruise','/kruːz/','go on a cruise',"круиз","отправиться в круиз"],
+['departure lounge','/dɪˈpɑːtʃə laʊndʒ/','wait in the departure lounge',"зал ожидания вылета","ждать в зале ожидания вылета"],
+['driver','/ˈdraɪvə/','a bus / taxi / lorry driver',"водитель","водитель автобуса / такси / грузовика"],
+['flight','/flaɪt/','book a flight',"авиарейс, полёт","забронировать авиабилет"],
+['gate','/ɡeɪt/','go to the gate',"выход на посадку","идти к выходу на посадку"],
+['get on / get off','/ɡet ɒn/ · /ɡet ɒf/','get on a bus · get off a train',"садиться в транспорт / выходить из транспорта","сесть в автобус · выйти из поезда"],
+['give somebody a lift','/ɡɪv ˈsʌmbədi ə lɪft/','give a friend a lift',"подвезти кого-то","подвезти друга"],
+['land','/lænd/','land safely · land at the airport',"приземляться","благополучно приземлиться · приземлиться в аэропорту"],
+['launch','/lɔːntʃ/','launch a new route / service',"запускать, открывать (маршрут или услугу)","запустить новый маршрут / услугу"],
+['miss','/mɪs/','miss a train / flight / bus',"опоздать на транспорт","опоздать на поезд / самолёт / автобус"],
+['motorway','/ˈməʊtəweɪ/','join the motorway',"автомагистраль","выехать на автомагистраль"],
+['overtake','/ˌəʊvəˈteɪk/','overtake a car / lorry',"обгонять","обогнать машину / грузовик"],
+['platform','/ˈplætfɔːm/','Platform 4 · the train platform',"платформа","платформа 4 · железнодорожная платформа"],
+['port','/pɔːt/','a busy port',"порт","оживлённый порт"],
+['rail','/reɪl/','a rail network · a rail line',"железнодорожное сообщение, пути","железнодорожная сеть · железнодорожная линия"],
+['road sign','/ˈrəʊd saɪn/','follow a road sign',"дорожный знак","следовать указаниям дорожного знака"],
+['seat belt','/ˈsiːt belt/','fasten your seat belt',"ремень безопасности","пристегнуть ремень безопасности"],
+['steering wheel','/ˈstɪərɪŋ wiːl/','hold the steering wheel',"руль","держать руль"],
+['take off','/teɪk ɒf/','take off from the runway',"взлетать","взлететь со взлётно-посадочной полосы"],
+['traffic jam','/ˈtræfɪk dʒæm/','be stuck in a traffic jam',"пробка","застрять в пробке"],
+['tyre','/taɪə/','a flat tyre',"шина","спущенная шина"],
+['vehicle','/ˈviːɪkəl/','a vehicle for transport',"транспортное средство","транспортное средство для перевозки"],
+['waiting room','/ˈweɪtɪŋ ruːm/','a comfortable waiting room',"зал ожидания","удобный зал ожидания"]];
+const vocabGrid=document.getElementById('vocab-grid');
+vocabulary.forEach(([word,ipa,coll,translation,collTranslation])=>{const card=document.createElement('article');card.className='vocab-card';const name=document.createElement('strong');name.textContent=word;const phon=document.createElement('div');phon.className='ipa';phon.textContent=ipa;const phrase=document.createElement('p');phrase.className='coll';phrase.textContent=coll;const meaning=document.createElement('div');meaning.className='translation';meaning.textContent=translation;const collMeaning=document.createElement('div');collMeaning.className='coll-translation';collMeaning.textContent=collTranslation;const button=document.createElement('button');button.type='button';button.className='speak';button.textContent='🔊 Listen';button.setAttribute('aria-label','Listen to '+word+' and '+coll);button.addEventListener('click',()=>{if(!('speechSynthesis' in window)){button.textContent='Audio unavailable';return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word+'. '+coll.replaceAll(' · ','. ').replaceAll(' / ',' or '));u.lang='en-GB';u.rate=.85;const voices=speechSynthesis.getVoices();const british=voices.filter(v=>v.lang.toLowerCase().replace('_','-')==='en-gb');if(british.length)u.voice=british.find(v=>/female|hazel|serena|kate|susan|sonia/i.test(v.name))||british[0];speechSynthesis.speak(u)});card.append(name,phon,meaning,phrase,collMeaning,button);vocabGrid.append(card)});
+
+const tasks=[
+{title:'1. What does it mean?',sub:'Choose the meaning that fits the expression.',type:'mc',items:[
+['commute','travel regularly between home and work or school','go on a long holiday','change trains at a station'],
+['departure lounge','the airport area where passengers wait for their flight','the place where luggage is collected','the room where pilots work'],
+['overtake','pass a vehicle moving in the same direction','stop at the side of the road','drive someone to their house'],
+['carbon emissions','gases such as CO₂ released into the air','the price of petrol','smoke inside an aircraft'],
+['crew','people who work on a plane, ship or train','people who have bought tickets','people waiting at a bus stop'],
+['port','a place where ships load and unload passengers or goods','a platform for trains','a place where planes land'],
+['traffic jam','a long line of vehicles moving slowly or not at all','a road without any cars','a journey by car'],
+['launch','officially introduce a new service or route','cancel a journey','arrive at the airport'],
+['motorway','a wide road designed for fast, long-distance traffic','a narrow street in a town','a path for pedestrians']
+]},
+{title:'2. Build the collocation',sub:'Choose the natural expression to complete each sentence.',type:'mc',items:[
+['We need to ______ before the flight. The sign says Gate 18.','go to the gate','go on the gate','go at the gate'],
+['The car is making a strange noise. I think we have ______.','a flat tyre','a flat wheel','a broken rail'],
+['Please ______ before the car starts moving.','fasten your seat belt','close your seat belt','wear your steering wheel'],
+['The airline is going to ______ to Seoul next spring.','launch a new route','take off a new route','catch a new route'],
+['My dad offered to ______ to the station.','give me a lift','make me a lift','take me a lift'],
+['Our train leaves from ______.','Platform 4','Gate 4','Port 4'],
+['You should ______ if you don’t want to get lost.','follow the road signs','catch the road signs','board the road signs'],
+['The plane should ______ at 8:45, so be at the airport early.','take off','get off','overtake'],
+['We decided to ______ around the Mediterranean.','go on a cruise','get on a cruise','catch a cruise']
+]},
+{title:'3. What would you say?',sub:'Read the situation and choose the most natural sentence.',type:'mc',items:[
+['Your friend is still at home. Your flight leaves in 90 minutes.','Hurry up! We might miss our flight!','Hurry up! We might lose our flight!','Hurry up! We might leave our flight!'],
+['You are on a bus and your stop is next.','We need to get off at the next stop.','We need to get out the bus at the next stop.','We need to take off at the next stop.'],
+['You want to ask your friend to drive you home.','Could you give me a lift home?','Could you catch me a lift home?','Could you give me a drive home?'],
+['Your friend asks why you arrived so late. The roads were packed.','We got stuck in a traffic jam.','We caught a traffic jam.','We missed a traffic jam.'],
+['You see your friend getting into a taxi.','Where are you getting a lift?','Where are you getting off?','Where are you driving the driver?'],
+['You want to know where your train leaves from.','Which platform does our train leave from?','Which port does our train leave from?','Which gate does our train leave from?'],
+['Your friend asks what happened during the flight. The plane reached the ground safely.','We landed safely.','We launched safely.','We took off safely.'],
+['Your friend is driving too fast and moving past every car.','Stop overtaking everyone!','Stop launching everyone!','Stop commuting everyone!']
+]},
+{title:'4. Type the missing expression',sub:'Write the correct word or expression. Spelling matters.',type:'text',items:[
+['I live outside the city, so I ______ to work every day.','commute'],
+['Our flight is delayed. Let’s sit in the ______ ______.','departure lounge'],
+['The driver couldn’t turn the car because the ______ ______ was stuck.','steering wheel'],
+['The airport screen says our flight is boarding at ______ 12.','Gate'],
+['The ______ on our flight were really friendly and helpful.','crew'],
+['The new ______ line will connect the two cities.','rail'],
+['My brother is learning to drive a ______.','vehicle'],
+['We got ______ the train at the wrong station.','off'],
+['The plane will ______ at 10:30 if the weather is good.','take off'],
+['The car has a flat ______. We need to stop.','tyre']
+]},
+{title:'5. Spot and fix the mistake',sub:'Each sentence has ONE incorrect travel expression. Type the correct expression only.',type:'text',items:[
+['We nearly lost our train because we arrived late.','missed our train'],
+['Please close your seat belt before we leave.','fasten your seat belt'],
+['My aunt gave us a ride to the airport. (Use the target expression.)','gave us a lift'],
+['We were waiting in the departure room for two hours.','departure lounge'],
+['The plane landed off at 7 a.m.','took off'],
+['The ship arrived at the platform early in the morning.','port'],
+['The driver followed the road signals to the motorway.','road signs'],
+['We boarded off the bus near the museum.','got off'],
+['The airline opened a new route to Japan last month. (Use the target verb.)','launched a new route']
+]}
+];
+const sections=document.getElementById('sections');const state={};let total=0;
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function normalize(s){return s.toLowerCase().trim().replace(/[’‘]/g,"'").replace(/\s+/g,' ').replace(/[.!?]+$/,'')}
+function render(){sections.innerHTML='';total=0;tasks.forEach((task,si)=>{const sec=document.createElement('section');const h=document.createElement('h2');h.textContent=task.title;sec.append(h);const p=document.createElement('p');p.className='sub';p.textContent=task.sub;sec.append(p);task.items.forEach((item,ii)=>{total++;const id=si+'-'+ii;const wrap=document.createElement('div');wrap.className='item';const question=document.createElement('div');question.className='prompt';question.textContent=(ii+1)+'. '+item[0];wrap.append(question);const feedback=document.createElement('div');feedback.className='feedback';feedback.setAttribute('aria-live','polite');let input;const controls=document.createElement('div');if(task.type==='mc'){controls.className='options';shuffle(item.slice(1)).forEach(opt=>{const btn=document.createElement('button');btn.className='option';btn.textContent=opt;btn.type='button';btn.addEventListener('click',()=>{controls.querySelectorAll('button').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');state[id]={value:opt,correct:normalize(opt)===normalize(item[1])};feedback.textContent=state[id].correct?'✓ Correct!':'Not quite. Try another answer.';feedback.className='feedback '+(state[id].correct?'correct':'incorrect');update()});controls.append(btn)})}else{controls.className='answerline';input=document.createElement('input');input.type='text';input.autocomplete='off';input.spellcheck=false;input.placeholder='Type your answer';input.setAttribute('aria-label',item[0]);const btn=document.createElement('button');btn.type='button';btn.className='check';btn.textContent='Check';const check=()=>{const val=input.value.trim();if(!val){feedback.textContent='Type your answer first.';feedback.className='feedback incorrect';return}const ok=normalize(val)===normalize(item[1]);state[id]={value:val,correct:ok};feedback.textContent=ok?'✓ Correct!':'Not quite. Check the spelling and try again.';feedback.className='feedback '+(ok?'correct':'incorrect');update()};btn.addEventListener('click',check);input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();check()}});input.addEventListener('input',()=>{if(state[id]){delete state[id];feedback.textContent='';update()}});controls.append(input,btn)}wrap.append(controls,feedback);sec.append(wrap)});sections.append(sec)});update()}
+function update(){const done=Object.keys(state).length;document.getElementById('counter').textContent=done+' / '+total+' checked';document.getElementById('bar').style.width=(done/total*100)+'%';document.getElementById('result').innerHTML=''}
+document.getElementById('finish').addEventListener('click',()=>{const done=Object.keys(state).length;const result=document.getElementById('result');if(done<total){result.innerHTML='<p class="incorrect">You have '+(total-done)+' unanswered question'+(total-done===1?'':'s')+'. Check every answer before finishing.</p>';return}const correct=Object.values(state).filter(x=>x.correct).length;const percent=Math.round(correct/total*100);result.innerHTML='<div class="result">'+correct+' / '+total+' correct · '+percent+'%</div><p>'+(percent===100?'Excellent! You know these expressions really well.':percent>=85?'Great work! Review the few expressions you missed.':percent>=65?'Good progress. Go back to the red answers and try again.':'Keep practising. Read the situations again and improve your answers.')+'</p><p class="muted">You can still correct any answer and calculate your result again.</p>';result.scrollIntoView({behavior:'smooth',block:'nearest'})});document.getElementById('reset').addEventListener('click',()=>{Object.keys(state).forEach(k=>delete state[k]);render();window.scrollTo({top:0,behavior:'smooth'})});render();
+</script></body></html>
